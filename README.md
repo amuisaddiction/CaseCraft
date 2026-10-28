@@ -1,4 +1,4 @@
-# HAQ — Your complaint. Your next step.
+# HAQ (CaseCraft) — Your complaint. Your next step.
 
 **HAQ** helps people turn a messy online-shopping complaint into an organised case file, a source-linked practical escalation ladder, and a clear next action.
 
