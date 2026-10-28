@@ -1,0 +1,59 @@
+{
+  "schemaVersion": 1,
+  "lastReviewedAt": null,
+  "disclaimer": "Process guidance, not legal advice.",
+  "rules": [
+    {
+      "id": "prepare-evidence",
+      "title": "Organise your evidence",
+      "purpose": "Make the complaint facts and supporting documents easy to review.",
+      "action": "Gather order confirmation, payment proof, photos/video if relevant, and previous messages.",
+      "sourceUrl": "https://consumerhelpline.gov.in/",
+      "sourceType": "official_service",
+      "checkedOn": null,
+      "verificationStatus": "needs_verification",
+      "deadlineKind": "none",
+      "deadlineDays": null,
+      "caveat": "Starter placeholder. Verify exact guidance and replace with a specific official source before relying on it."
+    },
+    {
+      "id": "platform-grievance",
+      "title": "Contact the platform or seller",
+      "purpose": "Give the company a clear written record of the issue and requested outcome.",
+      "action": "Prepare a factual complaint with order details and evidence; user sends it themselves.",
+      "sourceUrl": "https://consumeraffairs.nic.in/",
+      "sourceType": "primary",
+      "checkedOn": null,
+      "verificationStatus": "needs_verification",
+      "deadlineKind": "none",
+      "deadlineDays": null,
+      "caveat": "Do not display a statutory countdown until the exact legal provision is verified."
+    },
+    {
+      "id": "nch",
+      "title": "Consider National Consumer Helpline",
+      "purpose": "Find the official consumer grievance channel and understand its process.",
+      "action": "Open the official NCH portal and follow its current instructions.",
+      "sourceUrl": "https://consumerhelpline.gov.in/",
+      "sourceType": "official_service",
+      "checkedOn": null,
+      "verificationStatus": "needs_verification",
+      "deadlineKind": "none",
+      "deadlineDays": null,
+      "caveat": "Confirm current contacts, hours, and scope on the official portal before displaying details."
+    },
+    {
+      "id": "e-jagriti",
+      "title": "Review consumer commission filing information",
+      "purpose": "If earlier steps do not resolve the issue, review official filing information.",
+      "action": "Read current e-Jagriti guidance and consider getting qualified advice before filing.",
+      "sourceUrl": "https://e-jagriti.gov.in/",
+      "sourceType": "official_service",
+      "checkedOn": null,
+      "verificationStatus": "needs_verification",
+      "deadlineKind": "none",
+      "deadlineDays": null,
+      "caveat": "Starter placeholder. Do not infer jurisdiction, fees, documents, or limitation periods from this entry."
+    }
+  ]
+}
