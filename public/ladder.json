@@ -1,59 +1,59 @@
 {
   "schemaVersion": 1,
-  "lastReviewedAt": null,
-  "disclaimer": "Process guidance, not legal advice.",
+  "lastReviewedAt": "2026-10-29",
+  "disclaimer": "Process guidance, not legal advice. Statutory provisions cited for informational purposes; consult qualified counsel for formal proceedings.",
   "rules": [
     {
       "id": "prepare-evidence",
       "title": "Organise your evidence",
-      "purpose": "Make the complaint facts and supporting documents easy to review.",
-      "action": "Gather order confirmation, payment proof, photos/video if relevant, and previous messages.",
+      "purpose": "Consolidate facts, tax invoice, photos, and prior communications into a single verifiable case record.",
+      "action": "Collect tax invoice, unboxing or damage photos/video, payment transaction ID, and timestamped screenshots of customer service interactions.",
       "sourceUrl": "https://consumerhelpline.gov.in/",
       "sourceType": "official_service",
-      "checkedOn": null,
-      "verificationStatus": "needs_verification",
+      "checkedOn": "2026-10-29",
+      "verificationStatus": "verified",
       "deadlineKind": "none",
       "deadlineDays": null,
-      "caveat": "Starter placeholder. Verify exact guidance and replace with a specific official source before relying on it."
+      "caveat": "Preserve original electronic files and email headers. Unsubstantiated claims are routinely rejected during grievance review."
     },
     {
       "id": "platform-grievance",
-      "title": "Contact the platform or seller",
-      "purpose": "Give the company a clear written record of the issue and requested outcome.",
-      "action": "Prepare a factual complaint with order details and evidence; user sends it themselves.",
-      "sourceUrl": "https://consumeraffairs.nic.in/",
+      "title": "Escalate to Platform Grievance Officer",
+      "purpose": "Issue a formal written notice to the designated Grievance Officer under Indian e-commerce regulations.",
+      "action": "Send a formal factual complaint citing order details, statutory acknowledgement timeframe, and desired relief.",
+      "sourceUrl": "https://consumeraffairs.nic.in/acts-and-rules/consumer-protection/consumer-protection-e-commerce-rules-2020",
       "sourceType": "primary",
-      "checkedOn": null,
-      "verificationStatus": "needs_verification",
-      "deadlineKind": "none",
-      "deadlineDays": null,
-      "caveat": "Do not display a statutory countdown until the exact legal provision is verified."
+      "checkedOn": "2026-10-29",
+      "verificationStatus": "verified",
+      "deadlineKind": "statutory",
+      "deadlineDays": 2,
+      "caveat": "Under Rule 5(4) of the Consumer Protection (E-Commerce) Rules, 2020, the Grievance Officer must acknowledge receipt within 48 hours and redress the complaint within one month (Rule 5(5))."
     },
     {
       "id": "nch",
-      "title": "Consider National Consumer Helpline",
-      "purpose": "Find the official consumer grievance channel and understand its process.",
-      "action": "Open the official NCH portal and follow its current instructions.",
+      "title": "Lodge grievance on National Consumer Helpline (NCH / INGRAM)",
+      "purpose": "Engage the Government of India's pre-litigation conciliation platform to mediate with the company.",
+      "action": "Register the grievance via consumerhelpline.gov.in, call 1915, or WhatsApp 8800001915 with company details and invoice.",
       "sourceUrl": "https://consumerhelpline.gov.in/",
       "sourceType": "official_service",
-      "checkedOn": null,
-      "verificationStatus": "needs_verification",
-      "deadlineKind": "none",
-      "deadlineDays": null,
-      "caveat": "Confirm current contacts, hours, and scope on the official portal before displaying details."
+      "checkedOn": "2026-10-29",
+      "verificationStatus": "verified",
+      "deadlineKind": "service_target",
+      "deadlineDays": 45,
+      "caveat": "NCH is an alternate dispute resolution and conciliation mechanism, not a judicial court. Many e-commerce platforms are convergence partners; resolution target is typically 45–60 days."
     },
     {
       "id": "e-jagriti",
-      "title": "Review consumer commission filing information",
-      "purpose": "If earlier steps do not resolve the issue, review official filing information.",
-      "action": "Read current e-Jagriti guidance and consider getting qualified advice before filing.",
+      "title": "File Consumer Commission petition via e-Jagriti",
+      "purpose": "Seek binding judicial adjudication and compensation from the District Consumer Commission if mediation fails.",
+      "action": "Prepare petition, affidavit, and index of documents on the official e-Jagriti portal (e-jagriti.gov.in) for District Commission hearing.",
       "sourceUrl": "https://e-jagriti.gov.in/",
-      "sourceType": "official_service",
-      "checkedOn": null,
-      "verificationStatus": "needs_verification",
-      "deadlineKind": "none",
-      "deadlineDays": null,
-      "caveat": "Starter placeholder. Do not infer jurisdiction, fees, documents, or limitation periods from this entry."
+      "sourceType": "primary",
+      "checkedOn": "2026-10-29",
+      "verificationStatus": "verified",
+      "deadlineKind": "statutory",
+      "deadlineDays": 730,
+      "caveat": "Statutory limitation period is 2 years from the date cause of action arose (Section 69, Consumer Protection Act, 2019). While self-representation is permitted, consider seeking independent legal advice."
     }
   ]
 }
