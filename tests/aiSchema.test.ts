@@ -65,3 +65,4 @@ describe('Draft Message Generator', () => {
     expect(draft.mailtoUrl).toContain('mailto:grievance-officer@flipkart.com');
   });
 });
+

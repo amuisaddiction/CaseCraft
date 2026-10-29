@@ -31,3 +31,4 @@ describe('Calendar ICS Generator', () => {
     expect(ics).toContain('DESCRIPTION:Line 1\\nLine 2\\, with comma\\; and semicolon.');
   });
 });
+

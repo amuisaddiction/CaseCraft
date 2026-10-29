@@ -142,3 +142,4 @@ export function extractCaseLocally(text: string): ExtractedCase {
     missingFacts,
   };
 }
+

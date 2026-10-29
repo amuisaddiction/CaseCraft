@@ -153,3 +153,4 @@ export function buildComplaintDraft(consumerCase: ConsumerCase): GeneratedDraft 
     mailtoUrl,
   };
 }
+

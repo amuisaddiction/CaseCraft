@@ -52,3 +52,4 @@ describe('Privacy Masking Utility', () => {
     expect(summary.redactedTypes).toContain('Email address');
   });
 });
+
