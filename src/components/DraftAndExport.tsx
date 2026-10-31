@@ -9,6 +9,10 @@ import {
   Calendar,
   Check,
   FileText,
+  Clock,
+  ShieldCheck,
+  Building,
+  Tag,
 } from 'lucide-react';
 
 interface DraftAndExportProps {
@@ -47,10 +51,10 @@ export const DraftAndExport: React.FC<DraftAndExportProps> = ({
 
   const handleDownloadIcs = () => {
     const targetDate = new Date(`${reminderDate}T10:00:00`);
-    const title = `HAQ: Follow-up on ${consumerCase.platformOrSeller || 'order'} grievance`;
+    const title = `CaseCraft: Follow-up on ${consumerCase.platformOrSeller || 'order'} grievance`;
     const desc = `Reference: ${consumerCase.id}\nItem: ${consumerCase.itemDescription || 'Order'}\nCheck for 48h acknowledgement docket or redressal update as per E-Commerce Rules 2020.`;
     const icsContent = createReminderIcs(title, targetDate, desc);
-    downloadIcsFile(`HAQ-reminder-${consumerCase.id}`, icsContent);
+    downloadIcsFile(`CaseCraft-reminder-${consumerCase.id}`, icsContent);
     setDownloadedIcs(true);
     setTimeout(() => setDownloadedIcs(false), 3000);
   };
@@ -66,28 +70,45 @@ export const DraftAndExport: React.FC<DraftAndExportProps> = ({
   return (
     <div className="w-full max-w-4xl mx-auto space-y-6">
       {/* Folder Tab & Header */}
-      <div className="flex items-end justify-between px-2 sm:px-4 no-print">
-        <div className="folder-tab px-5 py-2.5 text-xs font-mono uppercase tracking-widest text-muted flex items-center gap-2">
-          <FileText className="w-3.5 h-3.5 text-vermilion" />
-          <span>Complaint Draft & Export</span>
+      <div className="flex items-end justify-between px-2 sm:px-4 gap-2 no-print">
+        <div className="folder-tab px-3.5 sm:px-5 py-2 sm:py-2.5 text-[11px] sm:text-xs font-mono uppercase tracking-wider sm:tracking-widest text-muted flex items-center gap-1.5 sm:gap-2 flex-shrink-0">
+          <FileText className="w-3.5 h-3.5 text-vermilion flex-shrink-0" />
+          <span className="sm:hidden">Notice • {consumerCase.id}</span>
+          <span className="hidden sm:inline">Formal Grievance Draft • {consumerCase.id}</span>
         </div>
-        <div className="flex items-center gap-2 pb-1 text-xs font-mono">
+        <div className="flex flex-wrap items-center justify-end gap-1.5 pb-1 text-[11px] sm:text-xs font-mono">
           {consumerCase.sampleMode && (
-            <span className="stamp-badge stamp-badge-vermilion">Sample Case</span>
+            <span className="stamp-badge stamp-badge-vermilion text-[10px] sm:text-xs px-2 py-0.5">Sample Case</span>
           )}
-          <span className="text-muted">Confirmed Facts Only</span>
+          <span className="text-forest font-semibold flex items-center gap-1">
+            <ShieldCheck className="w-3.5 h-3.5 flex-shrink-0" />
+            <span>Facts-Only Verified</span>
+          </span>
         </div>
       </div>
 
       {/* Main Document Area */}
       <div className="paper-surface rounded-b-xl rounded-tr-xl p-6 sm:p-10 relative">
-        {/* Printable Case Summary Header (Visible in print or screen) */}
+        {/* Fictional Sample Case Advisory Banner */}
+        {consumerCase.sampleMode && (
+          <div className="mb-5 p-3 rounded-lg border border-amber-border bg-amber-light text-xs font-mono text-ink flex items-center justify-between gap-3 no-print">
+            <div className="flex items-center gap-2">
+              <span className="stamp-badge stamp-badge-amber text-[10px]">Fictional Demo</span>
+              <span className="text-muted leading-tight">
+                Simulated notice draft generated from fictional dispute records (boAt / Flipkart).
+              </span>
+            </div>
+            <span className="hidden sm:inline-block text-[10px] text-muted uppercase">Demonstration Only</span>
+          </div>
+        )}
+
+        {/* Printable Case Summary Header */}
         <div className="pb-6 border-b border-line">
-          <div className="flex items-center justify-between gap-3 mb-2">
-            <div>
-              <span className="stamp-badge stamp-badge-vermilion">Formal Grievance Draft</span>
-              <span className="text-xs font-mono text-muted ml-3">
-                Docket Ref: {consumerCase.id} • Date: {new Date().toLocaleDateString('en-IN')}
+          <div className="flex flex-wrap items-center justify-between gap-3 mb-2">
+            <div className="flex items-center gap-3">
+              <span className="stamp-badge stamp-badge-vermilion">Formal Notice Draft</span>
+              <span className="text-xs font-mono text-muted">
+                Docket Ref: <strong className="text-ink">{consumerCase.id}</strong> • Date: {new Date().toLocaleDateString('en-IN', { day: '2-digit', month: 'short', year: 'numeric' })}
               </span>
             </div>
             {consumerCase.sampleMode && (
@@ -96,46 +117,49 @@ export const DraftAndExport: React.FC<DraftAndExportProps> = ({
               </span>
             )}
           </div>
-          <h2 className="font-serif text-2xl sm:text-3xl text-ink tracking-tight">
+          <h2 className="font-serif text-2xl sm:text-3xl text-ink font-bold tracking-tight">
             Prepare Your Message
           </h2>
-          <p className="mt-1 text-xs sm:text-sm text-muted">
-            This draft is built strictly from your confirmed facts. Review and edit any field before copying or sending. HAQ never sends communications automatically.
+          <p className="mt-1 text-xs sm:text-sm text-muted max-w-3xl leading-relaxed">
+            This formal complaint is built strictly from your confirmed facts and cites the statutory 48-hour acknowledgement rule under Rule 5(4) of the Consumer Protection (E-Commerce) Rules, 2020. Review and edit any field before copying or sending.
           </p>
         </div>
 
         {/* Action Toolbar */}
-        <div className="mt-6 flex flex-wrap items-center justify-between gap-3 p-3 rounded-lg bg-paper border border-line no-print">
+        <div className="mt-6 flex flex-wrap items-center justify-between gap-3 p-3.5 rounded-lg bg-paper border border-line no-print">
           <div className="flex flex-wrap items-center gap-2">
             <button
               type="button"
               onClick={handleCopy}
-              className="inline-flex items-center gap-1.5 px-3.5 py-2 rounded border border-line bg-card hover:bg-paper text-xs font-mono font-medium text-ink transition shadow-xs"
+              className="inline-flex items-center gap-1.5 px-4 py-2 rounded-md border border-line bg-card hover:bg-paper text-xs font-mono font-medium text-ink transition shadow-xs"
             >
               {copied ? <Check className="w-3.5 h-3.5 text-forest" /> : <Copy className="w-3.5 h-3.5 text-muted" />}
-              <span>{copied ? 'Copied to Clipboard!' : 'Copy Draft'}</span>
+              <span className={copied ? 'text-forest font-bold' : ''}>
+                {copied ? 'Copied to Clipboard!' : 'Copy Draft'}
+              </span>
             </button>
 
             <a
               href={mailtoLink}
-              className="inline-flex items-center gap-1.5 px-3.5 py-2 rounded border border-line bg-card hover:bg-paper text-xs font-mono font-medium text-ink transition shadow-xs"
+              className="inline-flex items-center gap-1.5 px-4 py-2 rounded-md border border-line bg-card hover:bg-paper text-xs font-mono font-medium text-ink transition shadow-xs"
             >
-              <Mail className="w-3.5 h-3.5 text-muted" />
+              <Mail className="w-3.5 h-3.5 text-vermilion" />
               <span>Open in Email Draft</span>
             </a>
 
             <button
               type="button"
               onClick={handlePrint}
-              className="inline-flex items-center gap-1.5 px-3.5 py-2 rounded border border-line bg-card hover:bg-paper text-xs font-mono font-medium text-ink transition shadow-xs"
+              className="inline-flex items-center gap-1.5 px-4 py-2 rounded-md border border-line bg-card hover:bg-paper text-xs font-mono font-medium text-ink transition shadow-xs"
             >
               <Printer className="w-3.5 h-3.5 text-muted" />
               <span>Print / Save as PDF</span>
             </button>
           </div>
 
-          <div className="flex items-center gap-2 text-xs font-mono text-muted">
-            <span>Rule 5(4) E-Commerce Rules, 2020 Cited</span>
+          <div className="flex items-center gap-1.5 text-xs font-mono text-muted bg-card px-2.5 py-1 rounded border border-line">
+            <Clock className="w-3.5 h-3.5 text-vermilion" />
+            <span className="font-semibold text-ink">Rule 5(4) E-Commerce Rules, 2020 Cited</span>
           </div>
         </div>
 
@@ -143,36 +167,43 @@ export const DraftAndExport: React.FC<DraftAndExportProps> = ({
         <div className="mt-6 space-y-4">
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div>
-              <label htmlFor="draft-recipient" className="block text-xs font-mono uppercase tracking-wider text-muted mb-1">
-                Designated Recipient:
+              <label htmlFor="draft-recipient" className="flex items-center gap-1.5 text-xs font-mono uppercase tracking-wider text-muted font-semibold mb-1.5">
+                <Building className="w-3.5 h-3.5 text-vermilion" />
+                <span>Designated Recipient:</span>
               </label>
               <input
                 id="draft-recipient"
                 type="text"
                 value={recipient}
                 onChange={(e) => setRecipient(e.target.value)}
-                className="w-full bg-paper px-3 py-2 border border-line rounded text-xs sm:text-sm text-ink outline-none"
+                className="w-full bg-paper px-3.5 py-2.5 border border-line rounded-md text-xs sm:text-sm text-ink outline-none focus:border-vermilion focus:bg-card transition font-mono"
               />
             </div>
 
             <div>
-              <label htmlFor="draft-subject" className="block text-xs font-mono uppercase tracking-wider text-muted mb-1">
-                Subject Line:
+              <label htmlFor="draft-subject" className="flex items-center gap-1.5 text-xs font-mono uppercase tracking-wider text-muted font-semibold mb-1.5">
+                <Tag className="w-3.5 h-3.5 text-vermilion" />
+                <span>Subject Line:</span>
               </label>
               <input
                 id="draft-subject"
                 type="text"
                 value={subject}
                 onChange={(e) => setSubject(e.target.value)}
-                className="w-full bg-paper px-3 py-2 border border-line rounded text-xs sm:text-sm text-ink outline-none"
+                className="w-full bg-paper px-3.5 py-2.5 border border-line rounded-md text-xs sm:text-sm text-ink outline-none focus:border-vermilion focus:bg-card transition font-mono"
               />
             </div>
           </div>
 
           <div>
-            <label htmlFor="draft-body" className="block text-xs font-mono uppercase tracking-wider text-muted mb-1">
-              Complaint Body (Editable):
-            </label>
+            <div className="flex items-center justify-between mb-1.5">
+              <label htmlFor="draft-body" className="text-xs font-mono uppercase tracking-wider text-muted font-semibold">
+                Official Letterhead Notice (Editable):
+              </label>
+              <span className="text-[11px] font-mono text-muted">
+                {draftBody.length} characters • {draftBody.split(/\s+/).filter(Boolean).length} words
+              </span>
+            </div>
             <textarea
               id="draft-body"
               rows={14}
@@ -181,38 +212,38 @@ export const DraftAndExport: React.FC<DraftAndExportProps> = ({
                 setDraftBody(e.target.value);
                 onUpdateDraft?.(e.target.value);
               }}
-              className="w-full bg-card p-4 border border-line rounded-lg font-mono text-xs sm:text-sm text-ink leading-relaxed outline-none focus:border-vermilion"
+              className="w-full bg-card p-5 border border-line rounded-lg font-mono text-xs sm:text-sm text-ink leading-relaxed outline-none focus:border-vermilion shadow-inner transition"
             />
           </div>
         </div>
 
         {/* Calendar Reminder Tool (.ics) */}
-        <div className="mt-8 p-5 rounded-lg border border-line bg-paper/60 no-print">
+        <div className="mt-8 p-5 sm:p-6 rounded-xl border border-line bg-paper/60 no-print">
           <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
             <div>
-              <h4 className="font-serif text-base font-bold text-ink flex items-center gap-2">
+              <h4 className="font-serif text-base sm:text-lg font-bold text-ink flex items-center gap-2">
                 <Calendar className="w-4 h-4 text-vermilion" />
-                Schedule Calendar Follow-up (.ics)
+                <span>Schedule Calendar Follow-up (.ics)</span>
               </h4>
-              <p className="text-xs text-muted mt-0.5">
-                Download a calendar reminder file for the statutory 48-hour acknowledgement or 30-day resolution check.
+              <p className="text-xs text-muted mt-1 leading-relaxed max-w-xl">
+                Download an .ICS calendar file to track the statutory 48-hour acknowledgement deadline or 30-day resolution check across Apple Calendar, Google Calendar, or Outlook.
               </p>
             </div>
 
-            <div className="flex items-center gap-3">
+            <div className="flex flex-wrap items-center gap-3 self-start sm:self-auto">
               <input
                 type="date"
                 value={reminderDate}
                 onChange={(e) => setReminderDate(e.target.value)}
-                className="bg-card px-3 py-1.5 border border-line rounded text-xs font-mono text-ink outline-none"
+                className="bg-card px-3 py-2 border border-line rounded-md text-xs font-mono text-ink outline-none focus:border-vermilion"
               />
               <button
                 type="button"
                 onClick={handleDownloadIcs}
-                className="inline-flex items-center gap-1.5 px-4 py-2 rounded bg-ink text-paper text-xs font-mono uppercase tracking-wider hover:opacity-90 transition"
+                className="inline-flex items-center gap-2 px-4 py-2 rounded-md bg-ink text-paper text-xs font-mono uppercase tracking-wider font-semibold hover:opacity-90 active:scale-[0.99] transition shadow-xs"
               >
                 {downloadedIcs ? <Check className="w-3.5 h-3.5 text-forest" /> : <Calendar className="w-3.5 h-3.5" />}
-                <span>{downloadedIcs ? 'Downloaded!' : 'Get .ICS Reminder'}</span>
+                <span>{downloadedIcs ? 'Reminder Downloaded!' : 'Get .ICS Reminder'}</span>
               </button>
             </div>
           </div>
@@ -220,6 +251,10 @@ export const DraftAndExport: React.FC<DraftAndExportProps> = ({
 
         {/* Printable Timeline & Facts for PDF Export */}
         <div className="print-only hidden mt-8 pt-8 border-t border-line">
+          <div className="border-b border-black pb-4 mb-4">
+            <h1 className="text-2xl font-serif font-bold">CASECRAFT CONSUMER GRIEVANCE DOSSIER</h1>
+            <p className="text-xs font-mono">DOCKET REF: {consumerCase.id} • DATE: {new Date().toLocaleDateString('en-IN')}</p>
+          </div>
           <h3 className="font-serif text-lg font-bold mb-2">Preserved Case Timeline</h3>
           <ul className="text-xs space-y-2 mb-6">
             {consumerCase.events.map((evt) => (
@@ -232,12 +267,12 @@ export const DraftAndExport: React.FC<DraftAndExportProps> = ({
             Official Source: Consumer Protection (E-Commerce) Rules, 2020 (Rule 5(4)-(5)) & Consumer Protection Act, 2019.
           </p>
           <p className="text-[10px] text-muted italic">
-            Process guidance, not legal advice. Prepared using HAQ (CaseCraft).
+            Process guidance, not legal advice. Prepared using CaseCraft (HAQ).
           </p>
         </div>
 
         {/* Back Link */}
-        <div className="mt-8 pt-6 border-t border-line flex items-center justify-between no-print">
+        <div className="mt-8 pt-6 border-t border-line flex flex-col sm:flex-row items-center justify-between gap-3 no-print">
           <button
             type="button"
             onClick={onBackToLadder}

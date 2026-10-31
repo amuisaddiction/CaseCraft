@@ -80,10 +80,22 @@ export function App() {
   const [isLoading, setIsLoading] = useState(false);
   const [statusMessage, setStatusMessage] = useState<string | null>(null);
 
-  // Restore saved active case from IndexedDB/localStorage on mount
+  // Restore saved active case from IndexedDB/localStorage on mount or check query params
   useEffect(() => {
-    async function loadSavedState() {
+    async function loadInitialState() {
       try {
+        const urlParams = typeof window !== 'undefined' ? new URLSearchParams(window.location.search) : null;
+        if (urlParams && urlParams.get('sample') === 'true') {
+          setActiveCase(SAMPLE_CASE);
+          const reqTab = urlParams.get('tab') as ActiveTab | null;
+          if (reqTab && ['input', 'case-file', 'ladder', 'response-log', 'draft'].includes(reqTab)) {
+            setActiveTab(reqTab);
+          } else {
+            setActiveTab('case-file');
+          }
+          return;
+        }
+
         const saved = await getActiveCase();
         if (saved) {
           setActiveCase(saved);
@@ -97,7 +109,7 @@ export function App() {
         console.warn('Failed to load saved case:', err);
       }
     }
-    loadSavedState();
+    loadInitialState();
 
     // Fetch latest verified ladder rules if available
     fetch('/ladder.json')
@@ -261,18 +273,18 @@ export function App() {
   return (
     <main className="min-h-screen bg-paper text-ink flex flex-col justify-between selection:bg-[#E9B5A8] selection:text-[#211F1C]">
       {/* Top Header */}
-      <header className="border-b border-line bg-card/70 backdrop-blur-xs sticky top-0 z-40 no-print">
-        <div className="mx-auto flex max-w-5xl items-center justify-between px-4 sm:px-6 py-4">
+      <header className="border-b border-line bg-card/80 backdrop-blur-md sticky top-0 z-40 no-print">
+        <div className="mx-auto flex max-w-5xl items-center justify-between px-4 sm:px-6 py-3.5">
           <div className="flex items-center gap-3">
             <button
               onClick={() => setActiveTab('input')}
-              className="text-left group"
+              className="text-left group flex items-baseline gap-2"
             >
-              <div className="flex items-center gap-1 font-serif text-2xl font-bold tracking-tight text-ink">
-                <span>HAQ</span>
+              <div className="flex items-center gap-0.5 font-serif text-2xl sm:text-3xl font-bold tracking-tight text-ink">
+                <span>CaseCraft</span>
                 <span className="text-vermilion">.</span>
               </div>
-              <span className="hidden sm:block font-mono text-[10px] uppercase tracking-widest text-muted">
+              <span className="hidden sm:inline-block font-mono text-[10px] uppercase tracking-widest text-muted">
                 Your complaint. Your next step.
               </span>
             </button>
@@ -280,12 +292,12 @@ export function App() {
 
           {/* Step Navigation Pill */}
           {activeCase && (
-            <div className="hidden md:flex items-center gap-1 bg-paper px-2 py-1 rounded-full border border-line text-xs font-mono">
+            <div className="hidden md:flex items-center gap-1 bg-paper px-2 py-1 rounded-full border border-line text-xs font-mono shadow-xs">
               <button
                 onClick={() => setActiveTab('case-file')}
                 className={`px-3 py-1 rounded-full transition ${
                   activeTab === 'case-file'
-                    ? 'bg-ink text-white font-semibold'
+                    ? 'bg-ink text-white font-semibold shadow-xs'
                     : 'text-muted hover:text-ink'
                 }`}
               >
@@ -295,7 +307,7 @@ export function App() {
                 onClick={() => setActiveTab('ladder')}
                 className={`px-3 py-1 rounded-full transition ${
                   activeTab === 'ladder'
-                    ? 'bg-ink text-white font-semibold'
+                    ? 'bg-ink text-white font-semibold shadow-xs'
                     : 'text-muted hover:text-ink'
                 }`}
               >
@@ -305,7 +317,7 @@ export function App() {
                 onClick={() => setActiveTab('draft')}
                 className={`px-3 py-1 rounded-full transition ${
                   activeTab === 'draft'
-                    ? 'bg-ink text-white font-semibold'
+                    ? 'bg-ink text-white font-semibold shadow-xs'
                     : 'text-muted hover:text-ink'
                 }`}
               >
@@ -315,7 +327,7 @@ export function App() {
                 onClick={() => setActiveTab('response-log')}
                 className={`px-3 py-1 rounded-full transition ${
                   activeTab === 'response-log'
-                    ? 'bg-ink text-white font-semibold'
+                    ? 'bg-ink text-white font-semibold shadow-xs'
                     : 'text-muted hover:text-ink'
                 }`}
               >
@@ -330,7 +342,7 @@ export function App() {
               <button
                 type="button"
                 onClick={handleResetCase}
-                className="inline-flex items-center gap-1 px-3 py-1.5 rounded border border-line bg-card hover:bg-paper text-xs font-mono text-muted hover:text-vermilion transition"
+                className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-md border border-line bg-card hover:bg-paper text-xs font-mono text-muted hover:text-vermilion transition shadow-xs"
                 title="Clear current case"
               >
                 <RotateCcw className="w-3.5 h-3.5" />
@@ -340,7 +352,7 @@ export function App() {
               <button
                 type="button"
                 onClick={handleLoadSample}
-                className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded border border-line bg-card hover:bg-paper text-xs font-mono text-ink transition"
+                className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-md border border-line bg-card hover:bg-paper text-xs font-mono font-medium text-ink transition shadow-xs"
               >
                 <Sparkles className="w-3.5 h-3.5 text-amber" />
                 <span>Try Sample Case</span>
@@ -348,11 +360,41 @@ export function App() {
             )}
           </div>
         </div>
+
+        {/* Mobile Sub-Navigation Bar when case is active */}
+        {activeCase && (
+          <div className="md:hidden flex items-center justify-around border-t border-line/60 bg-paper px-2 py-1.5 text-[11px] font-mono">
+            <button
+              onClick={() => setActiveTab('case-file')}
+              className={`px-2 py-1 rounded ${activeTab === 'case-file' ? 'bg-ink text-white font-bold' : 'text-muted'}`}
+            >
+              1. File
+            </button>
+            <button
+              onClick={() => setActiveTab('ladder')}
+              className={`px-2 py-1 rounded ${activeTab === 'ladder' ? 'bg-ink text-white font-bold' : 'text-muted'}`}
+            >
+              2. Ladder
+            </button>
+            <button
+              onClick={() => setActiveTab('draft')}
+              className={`px-2 py-1 rounded ${activeTab === 'draft' ? 'bg-ink text-white font-bold' : 'text-muted'}`}
+            >
+              3. Draft
+            </button>
+            <button
+              onClick={() => setActiveTab('response-log')}
+              className={`px-2 py-1 rounded ${activeTab === 'response-log' ? 'bg-ink text-white font-bold' : 'text-muted'}`}
+            >
+              4. Follow
+            </button>
+          </div>
+        )}
       </header>
 
       {/* Wispr Challenge Voice Banner */}
-      <div className="bg-paper-dark border-b border-line px-4 py-2 text-xs font-mono text-ink text-center flex flex-wrap items-center justify-center gap-2 no-print">
-        <Mic className="w-3.5 h-3.5 text-vermilion flex-shrink-0" />
+      <div className="bg-paper-dark border-b border-line px-3 py-1.5 sm:py-2 text-[11px] sm:text-xs font-mono text-ink text-center flex items-center justify-center gap-1.5 sm:gap-2 no-print leading-snug">
+        <Mic className="w-3.5 h-3.5 text-vermilion flex-shrink-0 animate-pulse" />
         <span>
           <strong>No Hands: The Wispr Challenge</strong> — Speak naturally using <strong>Wispr Flow</strong> in Hinglish or English to narrate your complaint.
         </span>
@@ -424,10 +466,12 @@ export function App() {
       {/* Footer */}
       <footer className="border-t border-line bg-card/60 py-6 text-xs text-muted no-print">
         <div className="mx-auto max-w-5xl px-4 sm:px-6 flex flex-col sm:flex-row items-center justify-between gap-3 font-mono">
-          <div className="flex items-center gap-2">
-            <span className="font-semibold text-ink">HAQ</span>
+          <div className="flex flex-wrap items-center gap-2">
+            <span className="font-semibold text-ink">CaseCraft</span>
             <span>•</span>
-            <span>What is rightfully yours.</span>
+            <span>Consumer Rights & Escalation Studio</span>
+            <span>•</span>
+            <span className="text-muted/80">HAQ Project</span>
           </div>
 
           <div className="flex items-center gap-4">
